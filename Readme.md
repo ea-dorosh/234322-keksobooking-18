@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Егор Дорош](https://up.htmlacademy.ru/javascript/18/user/234322).
-* Наставник: `Неизвестно`.
+* Наставник: `Cам себе наставник`.
 
 ---
 
