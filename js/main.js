@@ -21,7 +21,8 @@ var advertParams = {
     'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-  ]
+  ],
+  TIMES: ['12:00', '13:00', '14:00']
 };
 
 
@@ -37,6 +38,7 @@ function getRandomElements(arr) {
   arr = arr.slice();
   var elements = [];
   var amount = getRandomInt(1, arr.length);
+
   for (var i = 0; i < amount; i++) {
     var number = getRandomInt(0, arr.length - 1);
     elements.push(arr[number]);
@@ -45,53 +47,45 @@ function getRandomElements(arr) {
   return elements;
 }
 
-for (var i = 0; i < ADVERTS_QUANTITY; i++) {
-
-  var addresses = {
-    x: getRandomInt(0, map.offsetWidth),
-    y: getRandomInt(130, 630)
-  };
-
-  var obj = {
-    author: {
-      avatar: 'img/avatars/user0' + getRandomInt(1, 8) + '.png'
-    },
-
-    location: {
-      x: getRandomInt(0, map.offsetWidth),
-      y: getRandomInt(130, 630)
-    },
-
-    offer: {
-      title: 'Отель № ' + (i + 1),
-      address: addresses.x + ', ' + addresses.y,
-      price: Math.round(getRandomInt(1000, 3000) / 10) * 10,
-      type: getRandomElement(advertParams.TYPES),
-      rooms: getRandomInt(1, 4),
-      guests: getRandomInt(1, 6),
-      checkin: '1' + getRandomInt(2, 4) + ':00',
-      checkout: '1' + getRandomInt(2, 4) + ':00',
-      features: getRandomElements(advertParams.FEATURES),
-      description: getRandomElement(advertParams.DESCRIPTIONS),
-      photos: getRandomElements(advertParams.PHOTOS)
-    }
-  };
-
-  adverts.push(obj);
+function roundToTen(min, max) {
+  return Math.round(getRandomInt(min, max) / 10) * 10;
 }
 
-console.log(adverts)
+function generateAdverts(amount) {
+  for (var i = 0; i < amount; i++) {
 
-console.log(obj.author.avatar);
-console.log(obj.offer.title);
-console.log(obj.offer.address);
-console.log(obj.offer.price);
-console.log(obj.offer.type);
-console.log(obj.offer.rooms);
-console.log(obj.offer.guests);
-console.log(obj.offer.checkin);
-console.log(obj.offer.checkout);
-console.log(obj.offer.features);
-console.log(obj.offer.description);
-console.log(obj.offer.photos);
-console.log(obj.location);
+    var addresses = {
+      x: getRandomInt(0, map.offsetWidth),
+      y: getRandomInt(130, 630)
+    };
+
+    var advert = {
+      author: {
+        avatar: 'img/avatars/user0' + getRandomInt(1, 8) + '.png'
+      },
+
+      location: {
+        x: getRandomInt(0, map.offsetWidth),
+        y: getRandomInt(130, 630)
+      },
+
+      offer: {
+        title: 'Отель № ' + (i + 1),
+        address: addresses.x + ', ' + addresses.y,
+        price: roundToTen(1000, 3000),
+        type: getRandomElement(advertParams.TYPES),
+        rooms: getRandomInt(1, 4),
+        guests: getRandomInt(1, 6),
+        checkin: getRandomElement(advertParams.TIMES),
+        checkout: getRandomElement(advertParams.TIMES),
+        features: getRandomElements(advertParams.FEATURES),
+        description: getRandomElement(advertParams.DESCRIPTIONS),
+        photos: getRandomElements(advertParams.PHOTOS)
+      }
+    };
+
+    adverts.push(advert);
+  }
+}
+
+generateAdverts(ADVERTS_QUANTITY);
