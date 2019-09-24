@@ -89,3 +89,22 @@ function generateAdverts(amount) {
 }
 
 generateAdverts(ADVERTS_QUANTITY);
+
+var mapBlock = document.querySelector('.map');
+var mapPinsBlock = mapBlock.querySelector('.map__pins');
+var advertPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var fragment = document.createDocumentFragment();
+
+mapBlock.classList.remove('map--faded');
+
+for (var i = 0; i < adverts.length; i++) {
+  var pinElement = advertPinTemplate.cloneNode(true);
+  var pinElementImg = pinElement.querySelector('img')
+  pinElementImg.src = adverts[i].author.avatar;
+  pinElementImg.alt = adverts[i].offer.title;
+  fragment.appendChild(pinElement);
+  pinElement.style = 'left: ' + (adverts[i].location.x - (pinElement.offsetHeight / 2)) + 'px; top: ' + (adverts[i].location.y - pinElement.offsetHeight) + 'px;';
+}
+
+mapPinsBlock.appendChild(fragment);
+
