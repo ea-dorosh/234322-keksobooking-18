@@ -99,7 +99,7 @@ mapBlock.classList.remove('map--faded');
 
 for (var i = 0; i < adverts.length; i++) {
   var pinElement = advertPinTemplate.cloneNode(true);
-  var pinElementImg = pinElement.querySelector('img')
+  var pinElementImg = pinElement.querySelector('img');
   pinElementImg.src = adverts[i].author.avatar;
   pinElementImg.alt = adverts[i].offer.title;
   fragment.appendChild(pinElement);
