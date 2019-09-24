@@ -98,14 +98,15 @@ var fragment = document.createDocumentFragment();
 mapBlock.classList.remove('map--faded');
 
 function renderAdverts(array) {
-  for (var i = 0; i < array.length; i++) {
+
+  array.forEach(function (element) {
     var pinElement = advertPinTemplate.cloneNode(true);
     var pinElementImg = pinElement.querySelector('img');
-    pinElementImg.src = adverts[i].author.avatar;
-    pinElementImg.alt = adverts[i].offer.title;
+    pinElementImg.src = element.author.avatar;
+    pinElementImg.alt = element.offer.title;
     fragment.appendChild(pinElement);
-    pinElement.style = 'left: ' + (adverts[i].location.x - (pinElement.offsetHeight / 2)) + 'px; top: ' + (adverts[i].location.y - pinElement.offsetHeight) + 'px;';
-  }
+    pinElement.style = 'left: ' + (element.location.x - (pinElement.offsetHeight / 2)) + 'px; top: ' + (element.location.y - pinElement.offsetHeight) + 'px;';
+  });
   mapPinsBlock.appendChild(fragment);
 }
 
