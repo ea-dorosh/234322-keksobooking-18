@@ -64,10 +64,7 @@ function generateAdverts(amount) {
         avatar: 'img/avatars/user0' + getRandomInt(1, 8) + '.png'
       },
 
-      location: {
-        x: getRandomInt(0, map.offsetWidth),
-        y: getRandomInt(130, 630)
-      },
+      location: addresses,
 
       offer: {
         title: 'Отель № ' + (i + 1),
@@ -93,11 +90,12 @@ generateAdverts(ADVERTS_QUANTITY);
 var mapBlock = document.querySelector('.map');
 var mapPinsBlock = mapBlock.querySelector('.map__pins');
 var advertPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var fragment = document.createDocumentFragment();
+
 
 mapBlock.classList.remove('map--faded');
 
 function renderAdverts(array) {
+  var fragment = document.createDocumentFragment();
 
   array.forEach(function (element) {
     var pinElement = advertPinTemplate.cloneNode(true);
