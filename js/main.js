@@ -91,41 +91,16 @@ var mapBlock = document.querySelector('.map');
 var mapPinsBlock = mapBlock.querySelector('.map__pins');
 var advertPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-var advertTitle = cardTemplate.querySelector('.popup__title');
-var advertAddress = cardTemplate.querySelector('.popup__text--address');
-var advertPrice = cardTemplate.querySelector('.popup__text--price');
-var advertType = cardTemplate.querySelector('.popup__type');
-var advertGuestSize = cardTemplate.querySelector('.popup__text--capacity');
-
-
 mapBlock.classList.remove('map--faded');
 
 function renderAdverts(array) {
   var fragment = document.createDocumentFragment();
 
-  array.forEach(function (element, index) {
+  array.forEach(function (element) {
     var pinElement = advertPinTemplate.cloneNode(true);
     var pinElementImg = pinElement.querySelector('img');
     pinElementImg.src = element.author.avatar;
     pinElementImg.alt = element.offer.title;
-
-    advertTitle.textContent = element.offer.title;
-    advertAddress.textContent = element.offer.address;
-    advertPrice.textContent = element.offer.price + '₽/ночь';
-
-    if (element.offer.type === 'palace') {
-      advertType.textContent = 'Дворец';
-    } else if (element.offer.type === 'flat') {
-      advertType.textContent = 'Квартира';
-    } else if (element.offer.type === 'house') {
-      advertType.textContent = 'Дом';
-    } else if (element.offer.type === 'bungalo') {
-      advertType.textContent = 'Бунгало';
-    }
-
-
-
 
     fragment.appendChild(pinElement);
     pinElement.style = 'left: ' + (element.location.x - (pinElement.offsetHeight / 2)) + 'px; top: ' + (element.location.y - pinElement.offsetHeight) + 'px;';
@@ -135,3 +110,50 @@ function renderAdverts(array) {
 
 renderAdverts(adverts);
 
+
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+function createAdvertCard(element) {
+
+  var cardAdvert = cardTemplate.cloneNode(true);
+
+  var advertTitle = cardAdvert.querySelector('.popup__title');
+  var advertAddress = cardAdvert.querySelector('.popup__text--address');
+  var advertPrice = cardAdvert.querySelector('.popup__text--price');
+  var advertType = cardAdvert.querySelector('.popup__type');
+  var advertGuestSize = cardAdvert.querySelector('.popup__text--capacity');
+  var advertTime = cardAdvert.querySelector('.popup__text--time');
+  var advertFeatures = cardAdvert.querySelector('.popup__features li');
+  var advertDescription = cardAdvert.querySelector('.popup__description');
+  var advertPhotos = cardAdvert.querySelector('.popup__photos img');
+  var advertAvatar = cardAdvert.querySelector('.popup__avatar');
+
+  advertTitle.textContent = element.offer.title;
+  advertAddress.textContent = element.offer.address;
+  advertPrice.textContent = element.offer.price + '₽/ночь';
+
+  if (element.offer.type === 'palace') {
+    advertType.textContent = 'Дворец';
+  } else if (element.offer.type === 'flat') {
+    advertType.textContent = 'Квартира';
+  } else if (element.offer.type === 'house') {
+    advertType.textContent = 'Дом';
+  } else if (element.offer.type === 'bungalo') {
+    advertType.textContent = 'Бунгало';
+  }
+
+  advertGuestSize.textContent = element.offer.rooms + 'комнаты для ' + element.offer.guests + ' гостей';
+  advertTime.textContent = 'Заезд после ' + element.offer.checkin + ', выезд до ' + element.offer.checkout;
+  advertFeatures.textContent = element.offer.features;
+  advertDescription.textContent = element.offer.description;
+
+  element.offer.photos.forEach(function (photo) {
+    advertPhotos.src = photo;
+  });
+
+  advertAvatar.src = element.author.avatar;
+
+  map.appendChild(cardAdvert)
+}
+
+createAdvertCard(adverts[0])
