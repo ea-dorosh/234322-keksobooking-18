@@ -142,7 +142,7 @@ function createAdvertCard(element) {
     advertType.textContent = 'Бунгало';
   }
 
-  advertGuestSize.textContent = element.offer.rooms + 'комнаты для ' + element.offer.guests + ' гостей';
+  advertGuestSize.textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   advertTime.textContent = 'Заезд после ' + element.offer.checkin + ', выезд до ' + element.offer.checkout;
   advertFeatures.textContent = element.offer.features;
   advertDescription.textContent = element.offer.description;
