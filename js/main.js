@@ -54,7 +54,7 @@ function roundToTen(min, max) {
 function generateAdverts(amount) {
   for (var i = 0; i < amount; i++) {
 
-    var addresses = {
+    var address = {
       x: getRandomInt(0, map.offsetWidth),
       y: getRandomInt(130, 630)
     };
@@ -64,11 +64,11 @@ function generateAdverts(amount) {
         avatar: 'img/avatars/user0' + getRandomInt(1, 8) + '.png'
       },
 
-      location: addresses,
+      location: address,
 
       offer: {
         title: 'Отель № ' + (i + 1),
-        address: addresses.x + ', ' + addresses.y,
+        address: address.x + ', ' + address.y,
         price: roundToTen(1000, 3000),
         type: getRandomElement(advertParams.TYPES),
         rooms: getRandomInt(1, 4),
