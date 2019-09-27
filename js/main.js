@@ -103,7 +103,8 @@ function renderAdverts(array) {
     pinElementImg.alt = element.offer.title;
 
     fragment.appendChild(pinElement);
-    pinElement.style = 'left: ' + (element.location.x - (pinElement.offsetHeight / 2)) + 'px; top: ' + (element.location.y - pinElement.offsetHeight) + 'px;';
+    pinElement.style.left = (element.location.x - (pinElement.offsetHeight / 2)) + 'px';
+    pinElement.style.top = (element.location.y - pinElement.offsetHeight) + 'px';
   });
   mapPinsBlock.appendChild(fragment);
 }
@@ -124,10 +125,8 @@ function createAdvertCard(element) {
   var advertGuestSize = cardAdvert.querySelector('.popup__text--capacity');
   var advertTime = cardAdvert.querySelector('.popup__text--time');
   var advertFeatures = cardAdvert.querySelector('.popup__features');
-  var advertFeature = cardAdvert.querySelectorAll('.popup__features li');
   var advertDescription = cardAdvert.querySelector('.popup__description');
   var advertPhotos = cardAdvert.querySelector('.popup__photos');
-  var advertPhoto = cardAdvert.querySelectorAll('.popup__photos img');
   var advertAvatar = cardAdvert.querySelector('.popup__avatar');
 
   advertTitle.textContent = element.offer.title;
@@ -148,35 +147,25 @@ function createAdvertCard(element) {
   advertTime.textContent = 'Заезд после ' + element.offer.checkin + ', выезд до ' + element.offer.checkout;
   advertDescription.textContent = element.offer.description;
 
-  advertFeature.forEach(function (value) {
-    value.remove();
+
+  element.offer.features.forEach(function (value) {
+    var li = document.createElement('li');
+    li.classList.add('popup__feature');
+    li.classList.add('popup__feature--' + value);
+    advertFeatures.appendChild(li);
   });
 
-  function renderFeatures() {
-    element.offer.features.forEach(function (value) {
-      var li = document.createElement('li');
-      li.classList.add('popup__feature');
-      li.classList.add('popup__feature--' + value);
-      advertFeatures.appendChild(li);
-    });
-  }
-  renderFeatures();
-  advertPhoto.forEach(function (value) {
-    value.remove();
+
+  element.offer.photos.forEach(function (value) {
+    var img = document.createElement('img');
+    img.classList.add('popup__photo');
+    img.setAttribute('width', '45');
+    img.setAttribute('height', '40');
+    img.setAttribute('alt', 'Фотография жилья');
+    img.src = value;
+    advertPhotos.appendChild(img);
   });
 
-  function renderPhotos() {
-    element.offer.photos.forEach(function (value) {
-      var img = document.createElement('img');
-      img.classList.add('popup__photo');
-      img.setAttribute('width', '45');
-      img.setAttribute('height', '40');
-      img.setAttribute('alt', 'Фотография жилья');
-      img.src = value;
-      advertPhotos.appendChild(img);
-    });
-  }
-  renderPhotos();
   advertAvatar.src = element.author.avatar;
 
   map.appendChild(cardAdvert);
