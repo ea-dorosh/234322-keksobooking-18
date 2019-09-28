@@ -2,6 +2,7 @@
 
 var ADVERTS_QUANTITY = 8;
 var map = document.querySelector('.map');
+var mapFilter = document.querySelector('.map__filters-container');
 var adverts = [];
 
 var advertParams = {
@@ -168,7 +169,7 @@ function createAdvertCard(element) {
 
   advertAvatar.src = element.author.avatar;
 
-  map.appendChild(cardAdvert);
+  map.insertBefore(cardAdvert, mapFilter);
 }
 
 createAdvertCard(adverts[0]);
