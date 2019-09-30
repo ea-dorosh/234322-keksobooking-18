@@ -26,6 +26,12 @@ var advertParams = {
   TIMES: ['12:00', '13:00', '14:00']
 };
 
+var AccommodationType = {
+  BUNGALO: 'Бунгало',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+  FLAT: 'Квартира'
+};
 
 function getRandomInt(min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
@@ -115,7 +121,35 @@ renderAdverts(adverts);
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
-function createAdvertCard(element) {
+function getFeaturesFragment(features, block) {
+  var fragment = document.createDocumentFragment();
+
+  features.offer.features.forEach(function (value) {
+    var li = document.createElement('li');
+    li.classList.add('popup__feature');
+    li.classList.add('popup__feature--' + value);
+    fragment.appendChild(li);
+  });
+
+  block.appendChild(fragment);
+}
+
+function getPhotosFragment(photos, block) {
+  var fragment = document.createDocumentFragment();
+
+  photos.offer.photos.forEach(function (value) {
+    var img = document.createElement('img');
+    img.classList.add('popup__photo');
+    img.setAttribute('width', '45');
+    img.setAttribute('height', '40');
+    img.setAttribute('alt', 'Фотография жилья');
+    img.src = value;
+    fragment.appendChild(img);
+  });
+  block.appendChild(fragment);
+}
+
+function createAdvertCard(advert) {
 
   var cardAdvert = cardTemplate.cloneNode(true);
 
@@ -130,44 +164,16 @@ function createAdvertCard(element) {
   var advertPhotos = cardAdvert.querySelector('.popup__photos');
   var advertAvatar = cardAdvert.querySelector('.popup__avatar');
 
-  advertTitle.textContent = element.offer.title;
-  advertAddress.textContent = element.offer.address;
-  advertPrice.textContent = element.offer.price + '₽/ночь';
-
-  if (element.offer.type === 'palace') {
-    advertType.textContent = 'Дворец';
-  } else if (element.offer.type === 'flat') {
-    advertType.textContent = 'Квартира';
-  } else if (element.offer.type === 'house') {
-    advertType.textContent = 'Дом';
-  } else if (element.offer.type === 'bungalo') {
-    advertType.textContent = 'Бунгало';
-  }
-
-  advertGuestSize.textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
-  advertTime.textContent = 'Заезд после ' + element.offer.checkin + ', выезд до ' + element.offer.checkout;
-  advertDescription.textContent = element.offer.description;
-
-
-  element.offer.features.forEach(function (value) {
-    var li = document.createElement('li');
-    li.classList.add('popup__feature');
-    li.classList.add('popup__feature--' + value);
-    advertFeatures.appendChild(li);
-  });
-
-
-  element.offer.photos.forEach(function (value) {
-    var img = document.createElement('img');
-    img.classList.add('popup__photo');
-    img.setAttribute('width', '45');
-    img.setAttribute('height', '40');
-    img.setAttribute('alt', 'Фотография жилья');
-    img.src = value;
-    advertPhotos.appendChild(img);
-  });
-
-  advertAvatar.src = element.author.avatar;
+  advertTitle.textContent = advert.offer.title;
+  advertAddress.textContent = advert.offer.address;
+  advertPrice.textContent = advert.offer.price + '₽/ночь';
+  advertType.textContent = AccommodationType[advert.offer.type.toUpperCase()];
+  advertGuestSize.textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
+  advertTime.textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
+  advertDescription.textContent = advert.offer.description;
+  advertAvatar.src = advert.author.avatar;
+  getFeaturesFragment(advert, advertFeatures);
+  getPhotosFragment(advert, advertPhotos);
 
   map.insertBefore(cardAdvert, mapFilter);
 }
