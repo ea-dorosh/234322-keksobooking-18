@@ -2,8 +2,15 @@
 
 var ADVERTS_QUANTITY = 8;
 var map = document.querySelector('.map');
+var mapPin = document.querySelector('.map__pin--main');
+var advertForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters-container');
 var adverts = [];
+
+var KeyCodes = {
+  ENTER: 13,
+  ESC: 27
+};
 
 var advertParams = {
   TYPES: ['palace', 'flat', 'house', 'bungalo'],
@@ -98,8 +105,6 @@ var mapBlock = document.querySelector('.map');
 var mapPinsBlock = mapBlock.querySelector('.map__pins');
 var advertPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-mapBlock.classList.remove('map--faded');
-
 function renderAdverts(array) {
   var fragment = document.createDocumentFragment();
 
@@ -115,9 +120,6 @@ function renderAdverts(array) {
   });
   mapPinsBlock.appendChild(fragment);
 }
-
-renderAdverts(adverts);
-
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -178,4 +180,34 @@ function createAdvertCard(advert) {
   map.insertBefore(cardAdvert, mapFilter);
 }
 
-createAdvertCard(adverts[0]);
+//createAdvertCard(adverts[0]);
+
+var fieldAddress = document.querySelector('#address');
+var fieldRoom = document.querySelector('#room_number');
+var fieldGuest = document.querySelector('#capacity');
+var onFormSubmitButton = document.querySelector('.ad-form__submit');
+
+mapPin.addEventListener('mousedown', activatePage);
+mapPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KeyCodes.ENTER) {
+    activatePage();
+  }
+});
+
+function activatePage() {
+  mapBlock.classList.remove('map--faded');
+  advertForm.classList.remove('ad-form--disabled');
+  fieldAddress.value = parseInt(mapPin.style.left, 10) + ', ' + parseInt(mapPin.style.top, 10);
+  renderAdverts(adverts);
+}
+
+
+onFormSubmitButton.addEventListener('click', function (evt) {
+  if (fieldGuest.value > fieldRoom.value) {
+
+  } else {
+
+  }
+});
+
+
