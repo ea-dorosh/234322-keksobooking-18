@@ -202,12 +202,14 @@ function activatePage() {
 }
 
 
-onFormSubmitButton.addEventListener('click', function (evt) {
-  if (fieldGuest.value > fieldRoom.value) {
+onFormSubmitButton.addEventListener('click', function () {
 
-  } else {
-
+  if (fieldRoom.value > 3) {
+fieldGuest.setCustomValidity('гостей размещать нельзя')
+  } else if (fieldGuest.value > fieldRoom.value) {
+    fieldGuest.setCustomValidity('гостей не должно быть больше чем комнат')
   }
+
 });
 
 
