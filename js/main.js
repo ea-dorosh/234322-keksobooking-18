@@ -115,10 +115,15 @@ function renderAdverts(array) {
     pinElementImg.alt = element.offer.title;
 
     fragment.appendChild(pinElement);
-    pinElement.style.left = (element.location.x - (pinElement.offsetHeight / 2)) + 'px';
-    pinElement.style.top = (element.location.y - pinElement.offsetHeight) + 'px';
   });
   mapPinsBlock.appendChild(fragment);
+
+  var newPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+  newPins.forEach(function (value, index) {
+    value.style.left = (array[index].location.x - (value.offsetWidth / 2)) + 'px';
+    value.style.top = (array[index].location.y - value.offsetHeight) + 'px';
+  });
 }
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
