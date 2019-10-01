@@ -199,6 +199,8 @@ mapPin.addEventListener('keydown', function (evt) {
   }
 });
 
+fieldAddress.value = (parseInt(mapPin.style.left, 10) - mapPin.offsetWidth / 2) + ', ' + (parseInt(mapPin.style.top, 10) - mapPin.offsetHeight / 2);
+
 function activatePage() {
   mapBlock.classList.remove('map--faded');
   advertForm.classList.remove('ad-form--disabled');
@@ -210,9 +212,9 @@ function activatePage() {
 onFormSubmitButton.addEventListener('click', function () {
 
   if (fieldRoom.value > 3 && fieldGuest.value > 0) {
-    fieldGuest.setCustomValidity('гостей размещать нельзя');
+    fieldGuest.setCustomValidity('Гостей размещать нельзя');
   } else if (fieldGuest.value > fieldRoom.value) {
-    fieldGuest.setCustomValidity('гостей не должно быть больше чем комнат');
+    fieldGuest.setCustomValidity('Гостей не должно быть больше чем комнат');
   } else {
     fieldGuest.setCustomValidity('');
   }
