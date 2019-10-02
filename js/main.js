@@ -12,6 +12,13 @@ var KeyCodes = {
   ESC: 27
 };
 
+var PinParams = {
+  SMALL_WIDTH: 50,
+  SMALL_HEIGHT: 70,
+  BIG_WIDTH: 65,
+  BIG_HEIGHT: 65
+};
+
 var advertParams = {
   TYPES: ['palace', 'flat', 'house', 'bungalo'],
   FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
@@ -113,17 +120,11 @@ function renderAdverts(array) {
     var pinElementImg = pinElement.querySelector('img');
     pinElementImg.src = element.author.avatar;
     pinElementImg.alt = element.offer.title;
-
+    pinElement.style.left = (element.location.x - (PinParams.SMALL_WIDTH / 2)) + 'px';
+    pinElement.style.top = (element.location.y - PinParams.SMALL_HEIGHT) + 'px';
     fragment.appendChild(pinElement);
   });
   mapPinsBlock.appendChild(fragment);
-
-  var newPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-  newPins.forEach(function (value, index) {
-    value.style.left = (array[index].location.x - (value.offsetWidth / 2)) + 'px';
-    value.style.top = (array[index].location.y - value.offsetHeight) + 'px';
-  });
 }
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
@@ -185,7 +186,7 @@ function createAdvertCard(advert) {
   map.insertBefore(cardAdvert, mapFilter);
 }
 
-//createAdvertCard(adverts[0]);
+// createAdvertCard(adverts[0]);
 
 var fieldAddress = document.querySelector('#address');
 var fieldRoom = document.querySelector('#room_number');
@@ -199,15 +200,45 @@ mapPin.addEventListener('keydown', function (evt) {
   }
 });
 
-fieldAddress.value = (parseInt(mapPin.style.left, 10) - mapPin.offsetWidth / 2) + ', ' + (parseInt(mapPin.style.top, 10) - mapPin.offsetHeight / 2);
+fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - PinParams.BIG_WIDTH / 2) + ', ' + Math.round(parseInt(mapPin.style.top, 10) - PinParams.BIG_HEIGHT / 2);
+
+var fieldset = document.querySelectorAll('fieldset');
+var filterForm = document.querySelector('.map__filters');
+var select = filterForm.querySelectorAll('select');
+
+function disableForm() {
+  fieldset.forEach(function (value) {
+    value.disabled = true;
+  });
+
+  select.forEach(function (value) {
+    value.disabled = true;
+  });
+}
+
+function enableForm() {
+  fieldset.forEach(function (value) {
+    value.disabled = false;
+  });
+
+  select.forEach(function (value) {
+    value.disabled = false;
+  });
+}
+
+disableForm();
+
+function calculatePinCoords() {
+  fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - PinParams.BIG_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) - PinParams.BIG_HEIGHT);
+}
 
 function activatePage() {
   mapBlock.classList.remove('map--faded');
   advertForm.classList.remove('ad-form--disabled');
-  fieldAddress.value = parseInt(mapPin.style.left, 10) + ', ' + parseInt(mapPin.style.top, 10);
+  calculatePinCoords();
+  enableForm();
   renderAdverts(adverts);
 }
-
 
 onFormSubmitButton.addEventListener('click', function () {
 
