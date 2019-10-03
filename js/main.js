@@ -13,10 +13,14 @@ var KeyCodes = {
 };
 
 var PinParams = {
-  SMALL_WIDTH: 50,
-  SMALL_HEIGHT: 70,
-  BIG_WIDTH: 65,
-  BIG_HEIGHT: 65
+  WIDTH: 50,
+  HEIGHT: 70,
+};
+
+var MainPinParams = {
+  WIDTH: 65,
+  HEIGHT: 81,
+  START_HEIGHT: 65
 };
 
 var advertParams = {
@@ -200,7 +204,7 @@ mapPin.addEventListener('keydown', function (evt) {
   }
 });
 
-fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - PinParams.BIG_WIDTH / 2) + ', ' + Math.round(parseInt(mapPin.style.top, 10) - PinParams.BIG_HEIGHT / 2);
+fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - MainPinParams.WIDTH / 2) + ', ' + Math.round(parseInt(mapPin.style.top, 10) - MainPinParams.START_HEIGHT / 2);
 
 var fieldset = document.querySelectorAll('fieldset');
 var filterForm = document.querySelector('.map__filters');
@@ -229,7 +233,7 @@ function enableForm() {
 disableForm();
 
 function calculatePinCoords() {
-  fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - PinParams.BIG_WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) - PinParams.BIG_HEIGHT);
+  fieldAddress.value = Math.round(parseInt(mapPin.style.left, 10) - MainPinParams.WIDTH / 2) + ', ' + (parseInt(mapPin.style.top, 10) - MainPinParams.HEIGHT);
 }
 
 function activatePage() {
@@ -251,5 +255,3 @@ onFormSubmitButton.addEventListener('click', function () {
   }
 
 });
-
-
