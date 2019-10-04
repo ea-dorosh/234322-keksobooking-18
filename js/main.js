@@ -195,6 +195,8 @@ function createAdvertCard(advert) {
 var fieldAddress = document.querySelector('#address');
 var fieldRoom = document.querySelector('#room_number');
 var fieldGuest = document.querySelector('#capacity');
+var fieldType = document.querySelector('#type');
+var fieldPrice = document.querySelector('#price');
 var onFormSubmitButton = document.querySelector('.ad-form__submit');
 
 mapPinMain.addEventListener('mousedown', activatePage);
@@ -288,6 +290,16 @@ onFormSubmitButton.addEventListener('click', function () {
     fieldGuest.setCustomValidity('Гостей не должно быть больше чем комнат');
   } else {
     fieldGuest.setCustomValidity('');
+  }
+
+  if (fieldType.value === 'flat' && fieldPrice.value < 1000) {
+    fieldPrice.setCustomValidity('Минимальная цена за ночь в квартире 1 000руб.');
+  } else if (fieldType.value === 'house' && fieldPrice.value < 5000) {
+    fieldPrice.setCustomValidity('Минимальная цена за ночь в доме 5 000руб.');
+  } else if (fieldType.value === 'palace' && fieldPrice.value < 10000) {
+    fieldPrice.setCustomValidity('Минимальная цена за ночь в дворце 10 000руб.');
+  } else {
+    fieldPrice.setCustomValidity('');
   }
 
 });
