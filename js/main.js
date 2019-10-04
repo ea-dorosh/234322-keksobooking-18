@@ -197,6 +197,8 @@ var fieldRoom = document.querySelector('#room_number');
 var fieldGuest = document.querySelector('#capacity');
 var fieldType = document.querySelector('#type');
 var fieldPrice = document.querySelector('#price');
+var fieldCheckIn = document.querySelector('#timein');
+var fieldCheckOut = document.querySelector('#timeout');
 var onFormSubmitButton = document.querySelector('.ad-form__submit');
 
 mapPinMain.addEventListener('mousedown', activatePage);
@@ -283,7 +285,10 @@ function onEscPress(el) {
 }
 
 onFormSubmitButton.addEventListener('click', function () {
+  checkFormValidity();
+});
 
+function checkFormValidity() {
   if (fieldRoom.value > 3 && fieldGuest.value > 0) {
     fieldGuest.setCustomValidity('Гостей размещать нельзя');
   } else if (fieldGuest.value > fieldRoom.value) {
@@ -302,4 +307,9 @@ onFormSubmitButton.addEventListener('click', function () {
     fieldPrice.setCustomValidity('');
   }
 
-});
+  if (fieldCheckIn.value !== fieldCheckOut.value) {
+    fieldCheckOut.setCustomValidity('Время выезда должно совпадать с временем заезда');
+  } else {
+    fieldCheckOut.setCustomValidity('');
+  }
+}
