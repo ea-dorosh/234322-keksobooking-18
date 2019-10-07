@@ -190,8 +190,6 @@ function createAdvertCard(advert) {
   map.insertBefore(cardAdvert, mapFilter);
 }
 
-// createAdvertCard(adverts[0]);
-
 var fieldAddress = document.querySelector('#address');
 var fieldRoom = document.querySelector('#room_number');
 var fieldGuest = document.querySelector('#capacity');
