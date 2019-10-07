@@ -116,16 +116,25 @@ var mapBlock = document.querySelector('.map');
 var mapPinsBlock = mapBlock.querySelector('.map__pins');
 var advertPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-function renderAdverts(array) {
+
+function renderPins(array) {
   var fragment = document.createDocumentFragment();
 
-  array.forEach(function (element) {
+  array.forEach(function (element, index) {
     var pinElement = advertPinTemplate.cloneNode(true);
     var pinElementImg = pinElement.querySelector('img');
     pinElementImg.src = element.author.avatar;
     pinElementImg.alt = element.offer.title;
     pinElement.style.left = (element.location.x - (PinParams.WIDTH / 2)) + 'px';
     pinElement.style.top = (element.location.y - PinParams.HEIGHT) + 'px';
+    pinElement.addEventListener('click', function () {
+      var advertCard = document.querySelector('.map__card');
+      if (advertCard) {
+        closePopup(advertCard);
+      }
+      createAdvertCard(array[index]);
+      closeAdvertCard();
+    });
     fragment.appendChild(pinElement);
   });
   mapPinsBlock.appendChild(fragment);
@@ -175,6 +184,11 @@ function createAdvertCard(advert) {
   var advertDescription = cardAdvert.querySelector('.popup__description');
   var advertPhotos = cardAdvert.querySelector('.popup__photos');
   var advertAvatar = cardAdvert.querySelector('.popup__avatar');
+  var cardCloseButton = cardAdvert.querySelector('.popup__close');
+  onEscPress(cardAdvert);
+  cardCloseButton.addEventListener('click', function () {
+    closePopup(cardAdvert);
+  });
 
   advertTitle.textContent = advert.offer.title;
   advertAddress.textContent = advert.offer.address;
@@ -243,32 +257,10 @@ function activatePage() {
   advertForm.classList.remove('ad-form--disabled');
   calculatePinCoords();
   enableForm();
-  renderAdverts(adverts);
-  showAdvertCard();
+  renderPins(adverts);
+  // showAdvertCard();
 }
 
-function showAdvertCard() {
-  var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  mapPins.forEach(function (element, index) {
-    element.addEventListener('click', function () {
-      var advertCard = document.querySelector('.map__card');
-      if (advertCard) {
-        closePopup(advertCard);
-      }
-      createAdvertCard(adverts[index]);
-      closeAdvertCard();
-    });
-  });
-}
-
-function closeAdvertCard() {
-  var advertCard = document.querySelector('.map__card');
-  var cardClose = advertCard.querySelector('.popup__close');
-  onEscPress(advertCard);
-  cardClose.addEventListener('click', function () {
-    closePopup(advertCard);
-  });
-}
 
 function closePopup(element) {
   element.remove();
@@ -286,28 +278,58 @@ onFormSubmitButton.addEventListener('click', function () {
   checkFormValidity();
 });
 
-function checkFormValidity() {
-  if (fieldRoom.value > 3 && fieldGuest.value > 0) {
-    fieldGuest.setCustomValidity('Гостей размещать нельзя');
-  } else if (fieldGuest.value > fieldRoom.value) {
-    fieldGuest.setCustomValidity('Гостей не должно быть больше чем комнат');
-  } else {
-    fieldGuest.setCustomValidity('');
-  }
+var AdvertMinPrices = {
+  BUNGALO: 1,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
 
-  if (fieldType.value === 'flat' && fieldPrice.value < 1000) {
-    fieldPrice.setCustomValidity('Минимальная цена за ночь в квартире 1 000руб.');
-  } else if (fieldType.value === 'house' && fieldPrice.value < 5000) {
-    fieldPrice.setCustomValidity('Минимальная цена за ночь в доме 5 000руб.');
-  } else if (fieldType.value === 'palace' && fieldPrice.value < 10000) {
-    fieldPrice.setCustomValidity('Минимальная цена за ночь в дворце 10 000руб.');
-  } else {
-    fieldPrice.setCustomValidity('');
+function changeMinPrice() {
+  if (fieldType.value === 'flat') {
+    fieldPrice.placeholder = AdvertMinPrices.FLAT;
+  } else if (fieldType.value === 'house') {
+    fieldPrice.placeholder = AdvertMinPrices.HOUSE;
+  } else if (fieldType.value === 'palace') {
+    fieldPrice.placeholder = AdvertMinPrices.PALACE;
+  } else if (fieldType.value === 'bungalo') {
+    fieldPrice.placeholder = AdvertMinPrices.BUNGALO;
   }
+}
+
+fieldType.addEventListener('change', changeMinPrice);
+fieldCheckIn.addEventListener('change', correctCheckOut);
+
+function correctCheckOut() {
+  fieldCheckOut.value = fieldCheckIn.value;
+}
+
+function checkFormValidity() {
+  var errorText = '';
+  if (fieldRoom.value > 3 && fieldGuest.value > 0) {
+    errorText = 'Гостей размещать нельзя';
+  } else if (fieldGuest.value > fieldRoom.value) {
+    errorText = 'Гостей не должно быть больше чем комнат';
+  } else {
+    errorText = '';
+  }
+  fieldRoom.setCustomValidity(errorText);
+
+  if (fieldType.value === 'flat' && fieldPrice.value < AdvertMinPrices.FLAT) {
+    errorText = 'Минимальная цена за ночь в квартире 1 000руб.';
+  } else if (fieldType.value === 'house' && fieldPrice.value < AdvertMinPrices.HOUSE) {
+    errorText = 'Минимальная цена за ночь в доме 5 000руб.';
+  } else if (fieldType.value === 'palace' && fieldPrice.value < AdvertMinPrices.PALACE) {
+    errorText = 'Минимальная цена за ночь в дворце 10 000руб.';
+  } else {
+    errorText = '';
+  }
+  fieldType.setCustomValidity(errorText);
 
   if (fieldCheckIn.value !== fieldCheckOut.value) {
-    fieldCheckOut.setCustomValidity('Время выезда должно совпадать с временем заезда');
+    fieldType = 'Время выезда должно совпадать с временем заезда';
   } else {
-    fieldCheckOut.setCustomValidity('');
+    fieldType = '';
   }
+  fieldType.setCustomValidity(errorText);
 }
