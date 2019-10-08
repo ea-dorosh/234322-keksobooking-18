@@ -133,7 +133,6 @@ function renderPins(array) {
         closePopup(advertCard);
       }
       createAdvertCard(array[index]);
-      closeAdvertCard();
     });
     fragment.appendChild(pinElement);
   });
