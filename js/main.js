@@ -120,7 +120,7 @@ var advertPinTemplate = document.querySelector('#pin').content.querySelector('.m
 function renderPins(array) {
   var fragment = document.createDocumentFragment();
 
-  array.forEach(function (element, index) {
+  array.forEach(function (element) {
     var pinElement = advertPinTemplate.cloneNode(true);
     var pinElementImg = pinElement.querySelector('img');
     pinElementImg.src = element.author.avatar;
@@ -132,7 +132,7 @@ function renderPins(array) {
       if (advertCard) {
         closePopup(advertCard);
       }
-      createAdvertCard(array[index]);
+      createAdvertCard(element);
     });
     fragment.appendChild(pinElement);
   });
@@ -315,11 +315,11 @@ function checkFormValidity() {
   fieldRoom.setCustomValidity(errorText);
 
   if (fieldType.value === 'flat' && fieldPrice.value < AdvertMinPrices.FLAT) {
-    errorText = 'Минимальная цена за ночь в квартире 1 000руб.';
+    errorText = 'Минимальная цена за ночь в квартире ' + AdvertMinPrices.FLAT + ' руб.';
   } else if (fieldType.value === 'house' && fieldPrice.value < AdvertMinPrices.HOUSE) {
-    errorText = 'Минимальная цена за ночь в доме 5 000руб.';
+    errorText = 'Минимальная цена за ночь в доме ' + AdvertMinPrices.HOUSE + ' руб.';
   } else if (fieldType.value === 'palace' && fieldPrice.value < AdvertMinPrices.PALACE) {
-    errorText = 'Минимальная цена за ночь в дворце 10 000руб.';
+    errorText = 'Минимальная цена за ночь в дворце ' + AdvertMinPrices.PALACE + 'руб.';
   } else {
     errorText = '';
   }
