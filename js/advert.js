@@ -80,7 +80,7 @@
 
   function onEscPress(el) {
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.util.KeyCodes.ESC) {
+      if (window.util.isEscEvent(evt)) {
         closePopup(el);
       }
     });

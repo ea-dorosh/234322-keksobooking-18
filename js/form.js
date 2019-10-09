@@ -53,7 +53,7 @@
 
   mapPinMain.addEventListener('mousedown', activatePage);
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.util.KeyCodes.ENTER) {
+    if (window.util.isEnterEvent(evt)) {
       activatePage();
     }
   });

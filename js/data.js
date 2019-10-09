@@ -44,7 +44,7 @@
         offer: {
           title: 'Отель № ' + (i + 1),
           address: address.x + ', ' + address.y,
-          price: window.util.roundToTen(1000, 3000),
+          price: window.util.roundToTenths(1000, 3000),
           type: window.util.getRandomElement(advertParams.TYPES),
           rooms: window.util.getRandomInt(1, 4),
           guests: window.util.getRandomInt(1, 6),
@@ -61,6 +61,7 @@
   }
 
   generateAdverts(ADVERTS_QUANTITY);
+
   window.data = {
     adverts: adverts,
     map: map
