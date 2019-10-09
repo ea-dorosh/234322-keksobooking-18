@@ -30,6 +30,7 @@
 
   function checkFormValidity() {
     var errorText = '';
+
     if (fieldRoom.value > 3 && fieldGuest.value > 0) {
       errorText = 'Гостей размещать нельзя';
     } else if (fieldGuest.value > fieldRoom.value) {
@@ -51,11 +52,11 @@
     fieldType.setCustomValidity(errorText);
 
     if (fieldCheckIn.value !== fieldCheckOut.value) {
-      fieldType = 'Время выезда должно совпадать с временем заезда';
+      errorText = 'Время выезда должно совпадать с временем заезда';
     } else {
-      fieldType = '';
+      errorText = '';
     }
-    fieldType.setCustomValidity(errorText);
+    fieldCheckOut.setCustomValidity(errorText);
   }
 
   onFormSubmitButton.addEventListener('click', function () {
@@ -65,8 +66,9 @@
   function correctCheckOut() {
     fieldCheckOut.value = fieldCheckIn.value;
   }
-  correctCheckOut();
+
   changeMinPrice();
+  correctCheckOut();
 
   fieldType.addEventListener('change', changeMinPrice);
   fieldCheckIn.addEventListener('change', correctCheckOut);

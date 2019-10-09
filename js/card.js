@@ -86,9 +86,9 @@
     });
   }
 
-  window.advert = {
-    closePopup: closePopup,
-    createAdvertCard: createAdvertCard
+  window.card = {
+    hide: closePopup,
+    show: createAdvertCard
   };
 
 })();
