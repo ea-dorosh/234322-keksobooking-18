@@ -35,7 +35,7 @@
     advertForm.classList.remove('ad-form--disabled');
     calculatePinCoords();
     enableForm();
-    window.pins.renderPins(window.data.adverts);
+    window.pins.render(window.data.adverts);
   }
 
   function disableForm() {
