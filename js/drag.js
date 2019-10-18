@@ -7,8 +7,8 @@
   var MapCoords = {
     MIN_LEFT: 0 - window.form.mainPinParams.WIDTH / 2,
     MAX_LEFT: map.offsetWidth - window.form.mainPinParams.WIDTH / 2,
-    MIN_TOP: 130,
-    MAX_TOP: 630
+    MIN_TOP: 130 - window.form.mainPinParams.HEIGHT,
+    MAX_TOP: 630 - window.form.mainPinParams.HEIGHT
   };
 
   function drag(evt, element) {
@@ -35,12 +35,15 @@
         y: moveEvt.clientY
       };
 
-      if ((element.offsetTop - shift.y) >= MapCoords.MIN_TOP && (element.offsetTop - shift.y) <= MapCoords.MAX_TOP) {
-        element.style.top = (element.offsetTop - shift.y) + 'px';
+      var dragElementTop = element.offsetTop - shift.y;
+      var dragElementLeft = element.offsetLeft - shift.x;
+
+      if (dragElementTop >= MapCoords.MIN_TOP && dragElementTop <= MapCoords.MAX_TOP) {
+        element.style.top = dragElementTop + 'px';
       }
 
-      if ((element.offsetLeft - shift.x) >= MapCoords.MIN_LEFT && (element.offsetLeft - shift.x) <= MapCoords.MAX_LEFT) {
-        element.style.left = (element.offsetLeft - shift.x) + 'px';
+      if (dragElementLeft >= MapCoords.MIN_LEFT && dragElementLeft <= MapCoords.MAX_LEFT) {
+        element.style.left = dragElementLeft + 'px';
       }
 
       // в стилях элемента меняются действующие координаты
