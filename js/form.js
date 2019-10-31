@@ -2,7 +2,7 @@
 
 (function () {
 
-  var URL = 'https://js.dump.academy/keksobooking/dat';
+  var URL = 'https://js.dump.academy/keksobooking/data';
 
   var MainPinParams = {
     WIDTH: 65,
