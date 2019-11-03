@@ -2,8 +2,6 @@
 
 (function () {
 
-  var URL = 'https://js.dump.academy/keksobooking/data';
-
   var MainPinParams = {
     WIDTH: 65,
     HEIGHT: 81,
@@ -18,13 +16,8 @@
   var filterForm = document.querySelector('.map__filters');
   var select = filterForm.querySelectorAll('select');
 
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-
   var onError = function (message) {
-    var error = errorTemplate.cloneNode(true);
-    var errorMessage = error.querySelector('.error__message');
-    errorMessage.textContent = message;
-    window.data.map.append(error);
+    window.modal.error(message);
   };
 
   var onSuccess = function (data) {
@@ -57,7 +50,7 @@
     advertForm.classList.remove('ad-form--disabled');
     calculatePinCoords();
     enableForm();
-    window.load.download(URL, onSuccess, onError);
+    window.network.load(onSuccess, onError);
   }
 
   function disableForm() {
