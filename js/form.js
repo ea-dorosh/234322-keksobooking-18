@@ -16,6 +16,14 @@
   var filterForm = document.querySelector('.map__filters');
   var select = filterForm.querySelectorAll('select');
 
+  var onError = function (message) {
+    window.modal.showError(message);
+  };
+
+  var onSuccess = function (data) {
+    window.pins.render(data);
+  };
+
   fieldAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MainPinParams.WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MainPinParams.START_HEIGHT / 2);
 
   function calculatePinCoords() {
@@ -42,7 +50,7 @@
     advertForm.classList.remove('ad-form--disabled');
     calculatePinCoords();
     enableForm();
-    window.pins.render(window.data.adverts);
+    window.network.load(onSuccess, onError);
   }
 
   function disableForm() {
