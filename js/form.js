@@ -17,7 +17,7 @@
   var select = filterForm.querySelectorAll('select');
 
   var onError = function (message) {
-    window.modal.error(message);
+    window.modal.showError(message);
   };
 
   var onSuccess = function (data) {

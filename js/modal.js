@@ -33,7 +33,7 @@
   }
 
   window.modal = {
-    error: showError
+    showError: showError
   };
 
 })();
