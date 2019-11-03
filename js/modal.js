@@ -11,11 +11,7 @@
     errorMessage.textContent = message;
     window.data.map.append(error);
 
-    document.addEventListener('keydown', function (evt) {
-      if (window.util.isEscEvent(evt)) {
-        closeError(error);
-      }
-    });
+    document.addEventListener('keydown', onEscPress);
 
     errorButton.addEventListener('click', function () {
       closeError(error);
@@ -29,7 +25,15 @@
   }
 
   function closeError(modal) {
+    document.removeEventListener('keydown', onEscPress);
     modal.remove();
+  }
+
+  function onEscPress(evt) {
+    var error = document.querySelector('.error');
+    if (window.util.isEscEvent(evt)) {
+      closeError(error);
+    }
   }
 
   window.modal = {
