@@ -29,7 +29,7 @@
 
   fieldAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MainPinParams.WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MainPinParams.START_HEIGHT / 2);
 
-  fieldAddress.default = Math.round(parseInt(mapPinMain.style.left, 10) + MainPinParams.WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MainPinParams.START_HEIGHT / 2);
+  fieldAddress.default = fieldAddress.value;
 
   function resetAddress() {
     fieldAddress.value = fieldAddress.default;
