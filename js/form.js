@@ -5,7 +5,7 @@
   var MainPinParams = {
     WIDTH: 65,
     HEIGHT: 81,
-    START_HEIGHT: 65
+    START_HEIGHT: 65,
   };
 
   var mapPinMain = document.querySelector('.map__pin--main');
@@ -24,7 +24,16 @@
     window.pins.render(data);
   };
 
+  mapPinMain.defaultLeft = mapPinMain.style.left;
+  mapPinMain.defaultTop = mapPinMain.style.top;
+
   fieldAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MainPinParams.WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MainPinParams.START_HEIGHT / 2);
+
+  fieldAddress.default = fieldAddress.value;
+
+  function resetAddress() {
+    fieldAddress.value = fieldAddress.default;
+  }
 
   function calculatePinCoords() {
     fieldAddress.value = Math.round(parseInt(mapPinMain.style.left, 10) + MainPinParams.WIDTH / 2) + ', ' + (parseInt(mapPinMain.style.top, 10) + MainPinParams.HEIGHT);
@@ -32,8 +41,9 @@
 
   mapPinMain.addEventListener('mousedown', function (evt) {
 
-    if (window.data.map.classList.contains('map--faded')) {
-      activatePage();
+    if (window.map.map.classList.contains('map--faded')) {
+      // activatePage();
+      window.page.activate();
     } else {
       window.drag.drag(evt, mapPinMain);
     }
@@ -41,12 +51,12 @@
   });
   mapPinMain.addEventListener('keydown', function (evt) {
     if (window.util.isEnterEvent(evt)) {
-      activatePage();
+      // activatePage();
+      window.page.activate();
     }
   });
 
-  function activatePage() {
-    window.data.map.classList.remove('map--faded');
+  function initForm() {
     advertForm.classList.remove('ad-form--disabled');
     calculatePinCoords();
     enableForm();
@@ -73,11 +83,30 @@
     });
   }
 
+  function resetForm() {
+    advertForm.reset();
+    resetAddress();
+    disableForm();
+    advertForm.classList.add('ad-form--disabled');
+    mapPinMain.style.left = mapPinMain.defaultLeft;
+    mapPinMain.style.top = mapPinMain.defaultTop;
+  }
+
   disableForm();
+
+  advertForm.addEventListener('submit', function (evt) {
+    window.network.upload(new FormData(advertForm), function () {
+      window.modal.showSuccess();
+      window.page.deactivate();
+    }, onError);
+    evt.preventDefault();
+  });
 
   window.form = {
     mainPinParams: MainPinParams,
-    calculatePinCoords: calculatePinCoords
+    calculatePinCoords: calculatePinCoords,
+    reset: resetForm,
+    init: initForm
   };
 
 })();

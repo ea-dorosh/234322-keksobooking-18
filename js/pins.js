@@ -21,10 +21,7 @@
       pinElement.style.left = (element.location.x - (PinParams.WIDTH / 2)) + 'px';
       pinElement.style.top = (element.location.y - PinParams.HEIGHT) + 'px';
       pinElement.addEventListener('click', function () {
-        var advertCard = document.querySelector('.map__card');
-        if (advertCard) {
-          window.card.hide(advertCard);
-        }
+        window.card.hide();
         window.card.show(element);
       });
       fragment.appendChild(pinElement);
@@ -32,8 +29,17 @@
     mapPinsBlock.appendChild(fragment);
   }
 
+  function removePins() {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+  }
+
   window.pins = {
-    render: renderPins
+    render: renderPins,
+    remove: removePins
   };
 
 })();
