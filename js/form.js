@@ -41,8 +41,9 @@
 
   mapPinMain.addEventListener('mousedown', function (evt) {
 
-    if (window.data.map.classList.contains('map--faded')) {
-      activatePage();
+    if (window.map.map.classList.contains('map--faded')) {
+      // activatePage();
+      window.page.activate();
     } else {
       window.drag.drag(evt, mapPinMain);
     }
@@ -50,12 +51,12 @@
   });
   mapPinMain.addEventListener('keydown', function (evt) {
     if (window.util.isEnterEvent(evt)) {
-      activatePage();
+      // activatePage();
+      window.page.activate();
     }
   });
 
-  function activatePage() {
-    window.data.map.classList.remove('map--faded');
+  function initForm() {
     advertForm.classList.remove('ad-form--disabled');
     calculatePinCoords();
     enableForm();
@@ -84,6 +85,11 @@
 
   function resetForm() {
     advertForm.reset();
+    resetAddress();
+    disableForm();
+    advertForm.classList.add('ad-form--disabled');
+    mapPinMain.style.left = mapPinMain.defaultLeft;
+    mapPinMain.style.top = mapPinMain.defaultTop;
   }
 
   disableForm();
@@ -91,16 +97,16 @@
   advertForm.addEventListener('submit', function (evt) {
     window.network.upload(new FormData(advertForm), function () {
       window.modal.showSuccess();
+      window.page.deactivate();
     }, onError);
     evt.preventDefault();
   });
 
   window.form = {
     mainPinParams: MainPinParams,
-    mapPinMain: mapPinMain,
     calculatePinCoords: calculatePinCoords,
-    resetForm: resetForm,
-    resetAddress: resetAddress
+    reset: resetForm,
+    init: initForm
   };
 
 })();

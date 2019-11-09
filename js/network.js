@@ -3,7 +3,7 @@
 (function () {
 
   var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
-  var URL_UPLOAD = 'https://js.dump.academy/keksobookinga';
+  var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
 
   var Code = {

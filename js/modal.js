@@ -10,7 +10,7 @@
     var errorMessage = error.querySelector('.error__message');
     var errorButton = error.querySelector('.error__button');
     errorMessage.textContent = message;
-    window.data.map.append(error);
+    window.map.map.append(error);
 
     document.addEventListener('keydown', onEscPress);
 
@@ -28,7 +28,7 @@
   function showSuccess() {
     var success = successTemplate.cloneNode(true);
     var successMessage = document.querySelector('.success__message');
-    window.data.map.append(success);
+    window.map.map.append(success);
 
     document.addEventListener('keydown', onEscPress);
 
@@ -40,26 +40,9 @@
   }
 
   function closeModal(modal) {
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
     document.removeEventListener('keydown', onEscPress);
     modal.remove();
-    window.form.resetForm();
-    window.form.resetAddress();
-
-    window.form.mapPinMain.style.left = window.form.mapPinMain.defaultLeft;
-    window.form.mapPinMain.style.top = window.form.mapPinMain.defaultTop;
-
-    var advertCard = document.querySelector('.map__card');
-    if (advertCard) {
-      window.card.hide(advertCard);
-    }
-
-    window.data.map.classList.add('map--faded');
-
-    mapPin.forEach(function (pin) {
-      pin.remove();
-    });
+    // window.page.deactivate();
   }
 
   function onEscPress(evt) {

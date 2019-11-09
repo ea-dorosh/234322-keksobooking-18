@@ -71,7 +71,7 @@
     getFeaturesFragment(advert, advertFeatures);
     getPhotosFragment(advert, advertPhotos);
 
-    window.data.map.insertBefore(cardAdvert, mapFilter);
+    window.map.map.insertBefore(cardAdvert, mapFilter);
   }
 
   function closePopup(element) {
@@ -86,8 +86,15 @@
     });
   }
 
+  function hidePopup() {
+    var advertCard = document.querySelector('.map__card');
+    if (advertCard) {
+      closePopup(advertCard);
+    }
+  }
+
   window.card = {
-    hide: closePopup,
+    hide: hidePopup,
     show: createAdvertCard
   };
 
