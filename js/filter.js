@@ -3,7 +3,6 @@
 (function () {
   var advertType = document.querySelector('#housing-type');
   var adverts = [];
-  var newAdverts;
 
   function addFilter() {
     filterQuantity();
@@ -11,8 +10,9 @@
   }
 
   function filterQuantity() {
-    newAdverts = window.filter.adverts.filter(function (advert, index) {
-      if (index < 2) {
+    // eslint-disable-next-line consistent-return
+    var newAdverts = window.filter.adverts.filter(function (advert, index) {
+      if (index < 5) {
         return advert;
       }
     });
@@ -22,7 +22,7 @@
   }
 
   function filterType() {
-    newAdverts = window.filter.adverts;
+    var newAdverts = window.filter.adverts;
     if (advertType.value === 'house') {
       newAdverts = window.filter.adverts.filter(function (advert) {
         return advert.offer.type === 'house';
