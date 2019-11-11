@@ -1,29 +1,60 @@
 'use strict';
 
 (function () {
-  var advertType = document.querySelector('#housing-type');
+  var advertFilter = document.querySelector('.map__filters');
   var adverts = [];
+  var filterAdverts;
+
+  var filtersState = {
+    'housing-type': 'any',
+    'housing-rooms': 'any',
+    'housing-guests': 'any',
+    'housing-price': 'any',
+    'features': []
+  };
 
   function initFilters(data) {
     adverts = data;
     window.pins.render(adverts);
-
-    advertType.addEventListener('change', onTypeFilterSelectClick);
+    advertFilter.addEventListener('change', onFilterChange);
   }
 
 
-  function filterByType(evt) {
-    if (evt.target.value === 'any') {
-      return adverts;
+  function filterByType() {
+    if (filtersState['housing-type'] === 'any') {
+      return filterAdverts;
     }
-    return adverts.filter(function (advert) {
-      return advert.offer.type === evt.target.value;
+    return filterAdverts.filter(function (advert) {
+      return advert.offer.type === filtersState['housing-type'];
     });
   }
 
-  function onTypeFilterSelectClick(evt) {
+  function filterByRoomQuantity() {
+    if (filtersState['housing-rooms'] === 'any') {
+      return filterAdverts;
+    }
+    return filterAdverts.filter(function (advert) {
+      return advert.offer.rooms === parseInt(filtersState['housing-rooms'], 10);
+    });
+  }
+
+
+  function onFilterChange(evt) {
+    filterAdverts = adverts;
     window.pins.remove();
-    window.pins.render(filterByType(evt));
+
+    Object.keys(filtersState).forEach(function (value) {
+      filtersState[value] = evt.target.value;
+    });
+
+    //filtersState[evt.target.id] = evt.target.value;
+    filterAdverts = filterByType();
+
+    //filtersState[evt.target.id] = evt.target.value;
+    filterAdverts = filterByRoomQuantity();
+
+    window.pins.render(filterAdverts);
+
   }
 
   window.filter = {
