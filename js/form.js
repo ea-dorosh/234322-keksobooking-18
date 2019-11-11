@@ -21,7 +21,7 @@
   };
 
   var onSuccess = function (data) {
-    window.pins.render(data);
+    window.filter.init(data);
   };
 
   mapPinMain.defaultLeft = mapPinMain.style.left;
@@ -42,7 +42,6 @@
   mapPinMain.addEventListener('mousedown', function (evt) {
 
     if (window.map.map.classList.contains('map--faded')) {
-      // activatePage();
       window.page.activate();
     } else {
       window.drag.drag(evt, mapPinMain);
@@ -51,7 +50,6 @@
   });
   mapPinMain.addEventListener('keydown', function (evt) {
     if (window.util.isEnterEvent(evt)) {
-      // activatePage();
       window.page.activate();
     }
   });
