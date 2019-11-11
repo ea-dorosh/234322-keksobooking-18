@@ -4,49 +4,30 @@
   var advertType = document.querySelector('#housing-type');
   var adverts = [];
 
-  function addFilter() {
-    window.pins.remove();
-    window.pins.render(filterQuantity(window.filter.adverts));
+  function initFilters(data) {
+    adverts = data;
+    window.pins.render(adverts);
 
-    advertType.addEventListener('change', filterType);
+    advertType.addEventListener('change', onTypeFilterSelectClick);
   }
 
-  function filterQuantity(array) {
-    // eslint-disable-next-line consistent-return
-    var shortAdverts = array.filter(function (advert, index) {
-      if (index < 5) {
-        return advert;
-      }
-    });
-    return shortAdverts;
-  }
 
-  function filterType() {
-    var typeAdverts = window.filter.adverts;
-    if (advertType.value === 'house') {
-      typeAdverts = window.filter.adverts.filter(function (advert) {
-        return advert.offer.type === 'house';
-      });
-    } else if (advertType.value === 'bungalo') {
-      typeAdverts = window.filter.adverts.filter(function (advert) {
-        return advert.offer.type === 'bungalo';
-      });
-    } else if (advertType.value === 'flat') {
-      typeAdverts = window.filter.adverts.filter(function (advert) {
-        return advert.offer.type === 'flat';
-      });
-    } else if (advertType.value === 'palace') {
-      typeAdverts = window.filter.adverts.filter(function (advert) {
-        return advert.offer.type === 'palace';
-      });
+  function filterByType(evt) {
+    if (evt.target.value === 'any') {
+      return adverts;
     }
+    return adverts.filter(function (advert) {
+      return advert.offer.type === evt.target.value;
+    });
+  }
+
+  function onTypeFilterSelectClick(evt) {
     window.pins.remove();
-    window.pins.render(filterQuantity(typeAdverts));
+    window.pins.render(filterByType(evt));
   }
 
   window.filter = {
-    adverts: adverts,
-    addFilter: addFilter
+    init: initFilters
   };
 
 })();

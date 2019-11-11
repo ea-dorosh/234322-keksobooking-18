@@ -21,9 +21,7 @@
   };
 
   var onSuccess = function (data) {
-    window.filter.adverts = data;
-    window.pins.render(window.filter.adverts);
-    window.filter.addFilter();
+    window.filter.init(data);
   };
 
   mapPinMain.defaultLeft = mapPinMain.style.left;
