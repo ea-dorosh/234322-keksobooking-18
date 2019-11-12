@@ -64,16 +64,45 @@
     });
   }
 
+  function filterByFeatures() {
+    if (!filtersState['features'].length) {
+      return filterAdverts;
+    }
+    return filterAdverts.filter(function (advert) {
+
+      // идем по массиву filtersState['features']
+      for (var i = 0; i < filtersState['features'].length; i++) {
+        // если advert.offer.features содержит значение из filtersState['features']
+        // ничего не делаем, если не содержит возвращаем false и убираем из фильтра
+        if (advert.offer.features.indexOf(filtersState['features'][i]) === -1) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
 
   function onFilterChange(evt) {
     filterAdverts = adverts;
     window.pins.remove();
 
     filtersState[evt.target.id] = evt.target.value;
+
+    if (evt.target.checked) {
+      filtersState['features'].push(evt.target.value);
+    } else {
+      var i = filtersState['features'].indexOf(evt.target.value);
+      if (i !== -1) {
+        filtersState['features'].splice(i, 1);
+      }
+    }
+
     filterAdverts = filterByRoomQuantity();
     filterAdverts = filterByType();
     filterAdverts = filterByPrice();
     filterAdverts = filterByGuests();
+    filterAdverts = filterByFeatures();
     window.pins.render(filterAdverts);
 
   }
