@@ -3,7 +3,7 @@
 (function () {
   var advertFilter = document.querySelector('.map__filters');
   var adverts = [];
-  var filterAdverts;
+  var filteredAdverts;
 
   var filtersState = {
     'housing-type': 'any',
@@ -20,38 +20,27 @@
   }
 
 
-  function filterByType() {
-    if (filtersState['housing-type'] === 'any') {
-      return filterAdverts;
+  function filterBySelect(value) {
+    if (filtersState[value] === 'any') {
+      return filteredAdverts;
     }
-    return filterAdverts.filter(function (advert) {
-      return advert.offer.type === filtersState['housing-type'];
-    });
-  }
-
-  function filterByRoomQuantity() {
-    if (filtersState['housing-rooms'] === 'any') {
-      return filterAdverts;
-    }
-    return filterAdverts.filter(function (advert) {
-      return advert.offer.rooms === parseInt(filtersState['housing-rooms'], 10);
-    });
-  }
-
-  function filterByGuests() {
-    if (filtersState['housing-guests'] === 'any') {
-      return filterAdverts;
-    }
-    return filterAdverts.filter(function (advert) {
-      return advert.offer.guests === parseInt(filtersState['housing-guests'], 10);
+    // eslint-disable-next-line consistent-return
+    return filteredAdverts.filter(function (advert) {
+      if (value === 'housing-type') {
+        return advert.offer.type === filtersState[value];
+      } else if (value === 'housing-rooms') {
+        return String(advert.offer.rooms) === filtersState[value];
+      } else if (value === 'housing-guests') {
+        return String(advert.offer.guests) === filtersState[value];
+      }
     });
   }
 
   function filterByPrice() {
     if (filtersState['housing-price'] === 'any') {
-      return filterAdverts;
+      return filteredAdverts;
     }
-    return filterAdverts.filter(function (advert) {
+    return filteredAdverts.filter(function (advert) {
       switch (filtersState['housing-price']) {
         case 'middle':
           return advert.offer.price > 10000 && advert.offer.price < 50000;
@@ -60,15 +49,14 @@
         case 'high':
           return advert.offer.price > 50000;
       }
-      return advert.offer.price === filtersState['housing-price'];
     });
   }
 
   function filterByFeatures() {
     if (!filtersState['features'].length) {
-      return filterAdverts;
+      return filteredAdverts;
     }
-    return filterAdverts.filter(function (advert) {
+    return filteredAdverts.filter(function (advert) {
 
       // идем по массиву filtersState['features']
       for (var i = 0; i < filtersState['features'].length; i++) {
@@ -84,7 +72,7 @@
 
 
   function onFilterChange(evt) {
-    filterAdverts = adverts;
+    filteredAdverts = adverts;
     window.pins.remove();
 
     filtersState[evt.target.id] = evt.target.value;
@@ -98,13 +86,12 @@
       }
     }
 
-    filterAdverts = filterByRoomQuantity();
-    filterAdverts = filterByType();
-    filterAdverts = filterByPrice();
-    filterAdverts = filterByGuests();
-    filterAdverts = filterByFeatures();
-    window.pins.render(filterAdverts);
-
+    filteredAdverts = filterBySelect('housing-type');
+    filteredAdverts = filterBySelect('housing-rooms');
+    filteredAdverts = filterBySelect('housing-guests');
+    filteredAdverts = filterByPrice();
+    filteredAdverts = filterByFeatures();
+    window.pins.render(filteredAdverts);
   }
 
   window.filter = {
